@@ -1,2 +1,4 @@
+import minibot
+
 if __name__ == '__main__':
-    pass
+    minibot.run_discord_bot()
