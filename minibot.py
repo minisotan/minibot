@@ -1,10 +1,9 @@
 import discord
 import responses
 import random
-
+from config import token
 
 def run_discord_bot():
-    TOKEN = 'MTEwMTkwNTYxMTQyOTUxOTUzMw.GtKWam.R6_LJhhgejLfdMfwl2OLaiZdXPpS-TEMvWhyK0'
     intents = discord.Intents.default()
     intents.message_content = True
     client = discord.Client(intents=intents)
@@ -55,4 +54,4 @@ def run_discord_bot():
             await message.channel.send("Shutting down the bot...")
             await client.close()
 
-    client.run(TOKEN)
+    client.run(token)
