@@ -1,18 +1,10 @@
 import discord
 import responses
-
-
-async def send_message(message, user_message, is_private):
-    try:
-        response = responses.get_response(user_message)
-        await message.author.send(response) if is_private else await message.channel.send(response)
-
-    except Exception as e:
-        print(e)
+import random
 
 
 def run_discord_bot():
-    TOKEN = 'MTEwMTkwNTYxMTQyOTUxOTUzMw.GEAfJz.HdDlttywCmVGv83eKoswXtOMgow9_WiiHAGSw0'
+    TOKEN = 'MTEwMTkwNTYxMTQyOTUxOTUzMw.GtKWam.R6_LJhhgejLfdMfwl2OLaiZdXPpS-TEMvWhyK0'
     intents = discord.Intents.default()
     intents.message_content = True
     client = discord.Client(intents=intents)
@@ -37,5 +29,30 @@ def run_discord_bot():
             await send_message(message, user_message, is_private=True)
         else:
             await send_message(message, user_message, is_private=False)
+
+### Roll [n] Die ###
+    async def roll_dice(message):
+        try:
+            command, argument = message.content.split(" ")
+            n = int(argument)
+            result = random.randint(1, n)
+            return f"The result of rolling a {n}-sided dice is {result}."
+        except ValueError:
+            return "Please provide a valid number."
+        except:
+            return "Oops! Something went wrong."
+        
+    # Define the roll command for the Discord bot
+    @client.event
+    async def on_message(message):
+        if message.content.startswith("!roll"):
+            result = await roll_dice(message)
+            await message.channel.send(result)
+    # Define the command to shut down the bot
+    @client.event
+    async def on_message(message):
+        if message.content == "!shutdown":
+            await message.channel.send("Shutting down the bot...")
+            await client.close()
 
     client.run(TOKEN)
